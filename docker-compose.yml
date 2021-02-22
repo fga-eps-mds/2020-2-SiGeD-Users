@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  api:
+    container_name: G4-API
+    build: .
+    ports:
+      - 3001:3001
+    volumes:
+      - ./:/code
+      - node_modules:/code/node_modules
+    command: "yarn start"
+
+volumes: 
+  node_modules:
