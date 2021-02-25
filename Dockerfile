@@ -4,4 +4,4 @@ COPY . /code
 
 WORKDIR /code
 
-RUN yarn
+CMD ["sh","-c", "yarn install && yarn start"]
