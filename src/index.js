@@ -8,7 +8,8 @@ const {
     DB_PASS,
     DB_NAME,
     DB_HOST,
-    PORT } = process.env
+    PORT
+} = process.env
 
 const url = `mongodb://${DB_USER}:${DB_PASS}@${DB_HOST}/${DB_NAME}`;
 

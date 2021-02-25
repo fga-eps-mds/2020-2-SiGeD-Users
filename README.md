@@ -1,13 +1,11 @@
-## 2020-2-G4-Backend
+# 2020.2 G4-Backend
 
-Como executar o projeto:
+## Como executar a aplicação
 
-Comando para instalar as dependências:
+Para rodar o projeto, basta rodar o comando:
 
-    yarn install
+```sh
+docker-compose up
+```
 
-Comando para executar o projeto: 
-    
-    yarn start 
-
-Após rodar os comandos, acesse http://localhost:3001/ para acessar a aplicação
+Após o comando aplicação estará rodando no endpoint [`http://localhost:3001/`](http://localhost:3001/)
