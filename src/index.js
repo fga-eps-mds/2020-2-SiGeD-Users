@@ -11,7 +11,6 @@ const {
     PORT
 } = process.env
 
-<<<<<<< HEAD
 const url = `mongodb://${DB_USER}:${DB_PASS}@${DB_HOST}/${DB_NAME}`;
 
 mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -21,12 +20,8 @@ mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
     .catch((err) => {
         console.log('Error on connecting to MongoDB', err);
     });
-=======
-mongoose.connect('mongodb://localhost', {useNewUongrlParser: true, useUnifiedTopology: true})
->>>>>>> Added database using mongoose
 
 const app = express()
-
 app.use(express.json())
 app.use(routes)
 

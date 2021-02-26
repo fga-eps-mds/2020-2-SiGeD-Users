@@ -8,3 +8,4 @@ routes.post('/signup', UserController.signUpPost)
 routes.put('/update/:id', UserController.signUpPut)
 routes.delete('/delete/:id', UserController.signUpDelete)
 
+module.exports = routes;
