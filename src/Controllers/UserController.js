@@ -10,14 +10,8 @@ const signUpGet = async (req, res) => {
 const signUpPost = async (req, res) => {
     const {name, email, enroll, pass} = req.body;
 
-    //Validação email
-    if (!validateEmail(email)) {
-        return res.json({"message":"email invalido"});
-    } 
-
-    //Validação nome
-    if (!validateName(name)) {
-        return res.json({"message":"nome invalido"});
+    if (!validate(name, email, enroll, pass)) {
+        return res.json({"message":"invalid"});
     }
 
     //Hash
@@ -37,6 +31,11 @@ const signUpPost = async (req, res) => {
 
 const signUpPut = async (req, res) => {
     const id = req.params.id;
+    const {name, email, enroll, pass} = req.body;
+    
+    if (!validate(name, email, enroll, pass)) {
+        return res.json({"message":"invalid"});
+    }
 
     const updateReturn = await User.findOneAndUpdate({_id:id}, req.body, 
         { new:  true }, (err, user)=>{
@@ -58,6 +57,13 @@ const signUpDelete = async (req, res) => {
     } else {
         return res.json({message:"failure"});
     }
+}
+
+const validate = (name, email, enroll, pass) => {
+    if (enroll == undefined || pass == undefined || !validateEmail(email) || validateName(name)) {
+        return false;
+    }
+    return true;
 }
 
 const validateEmail = (email) => {

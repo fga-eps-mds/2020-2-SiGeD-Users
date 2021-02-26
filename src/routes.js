@@ -3,9 +3,9 @@ const routes = express.Router();
 
 const UserController = require('./Controllers/UserController')
 
-routes.get('/index', UserController.signUpGet)
-routes.post('/signup', UserController.signUpPost)
-routes.put('/update/:id', UserController.signUpPut)
-routes.delete('/delete/:id', UserController.signUpDelete)
+routes.get('/signUpGet', UserController.signUpGet)
+routes.post('/signUp', UserController.signUpPost)
+routes.put('/user/update/:id', UserController.signUpPut)
+routes.delete('/user/delete/:id', UserController.signUpDelete)
 
 module.exports = routes;
