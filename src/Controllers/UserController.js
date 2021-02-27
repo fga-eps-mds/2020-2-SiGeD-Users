@@ -8,36 +8,42 @@ const signUpGet = async (req, res) => {
 }
 
 const signUpPost = async (req, res) => {
-    const {name, email, enroll, pass} = req.body;
+    let {name, email, enroll, pass} = req.body;
 
     if (!validate(name, email, enroll, pass)) {
         return res.json({"message":"invalid"});
     }
 
-    //Hash
-    (async() => {
-        const hash = await hashPass(pass)
+    const user = await User.create({
+        name: name, 
+        email: email,
+        enroll: enroll,
+        pass: await hashPass(pass)
+    });
 
-        const user = await User.create({
-            name: name, 
-            email: email,
-            enroll: enroll,
-            pass: hash
-        });
-
-        return res.json(user);
-    })();
+    return res.json(user);
 }
 
 const signUpPut = async (req, res) => {
     const id = req.params.id;
-    const {name, email, enroll, pass} = req.body;
-    
+    let {name, email, enroll, pass} = req.body;
+
     if (!validate(name, email, enroll, pass)) {
         return res.json({"message":"invalid"});
     }
 
-    const updateReturn = await User.findOneAndUpdate({_id:id}, req.body, 
+    const usuarioEncontrado = await User.findOne({_id:id});
+
+    //senha nao se altera
+    if (await bcrypt.compare(req.body.pass, usuarioEncontrado.pass)) {
+        pass = usuarioEncontrado.pass;
+    } 
+    //senha alterada
+    else { 
+        pass = await hashPass(pass);
+    }
+
+    const updateReturn = await User.findOneAndUpdate({_id:id}, {name, email, enroll, pass}, 
         { new:  true }, (err, user)=>{
             if (err) {
                 return res.json(err);
@@ -60,7 +66,7 @@ const signUpDelete = async (req, res) => {
 }
 
 const validate = (name, email, enroll, pass) => {
-    if (enroll == undefined || pass == undefined || !validateEmail(email) || validateName(name)) {
+    if (enroll == undefined || pass == undefined || !validateEmail(email) || !validateName(name)) {
         return false;
     }
     return true;
@@ -77,15 +83,8 @@ const validateName = (name) => {
 } 
 
 const hashPass = async (pass, saltRounds = 10) => {
-    try {
-        const salt = await bcrypt.genSalt(saltRounds);
-
-        return await bcrypt.hash(pass, salt);
-        
-    } catch (error) {
-        console.log(error);
-        return null;
-    }
-};
+    const salt = await bcrypt.genSalt(saltRounds);
+    return await bcrypt.hash(pass, salt);
+}
 
 module.exports = {signUpGet, signUpPost, signUpPut, signUpDelete}
