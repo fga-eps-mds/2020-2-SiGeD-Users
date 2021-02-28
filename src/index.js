@@ -1,4 +1,3 @@
-const { request } = require('express')
 const express = require('express')
 const routes = require('./routes')
 const mongoose = require('mongoose')
@@ -22,7 +21,6 @@ mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
     });
 
 const app = express()
-
 app.use(express.json())
 app.use(routes)
 
