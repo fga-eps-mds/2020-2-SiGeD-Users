@@ -1,6 +1,7 @@
 const express = require('express')
 const routes = require('./routes')
 const mongoose = require('mongoose')
+const cors = require('cors')
 
 const {
     DB_USER,
@@ -21,6 +22,7 @@ mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
     });
 
 const app = express()
+app.use(cors())
 app.use(express.json())
 app.use(routes)
 
