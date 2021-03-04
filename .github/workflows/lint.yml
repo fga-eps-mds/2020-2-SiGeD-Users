@@ -7,8 +7,8 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     
-    - name: Run yarn install
+    - name: Install Dependencies
       run: yarn install
 
-    - name: Run ESLint
-      run: npx eslnt . --ext .js
+    - name: ESLint check
+      run: npx eslint . --ext .js
