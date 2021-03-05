@@ -1,4 +1,5 @@
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const User = require('../Models/UserSchema');
 
 const validateEmail = (email) => {
@@ -93,6 +94,27 @@ const signUpDelete = async (req, res) => {
   return res.json({ message: 'failure' });
 };
 
+const login = async (req, res) => {
+  const usuario = await User.findOne({ email: req.body.email });
+
+  // usuario invalido
+  if (usuario == null) {
+    return res.json({ message: 'nao existe' });
+  }
+
+  // senha correta
+  if (await bcrypt.compare(req.body.pass, usuario.pass)) {
+    const { id } = usuario;
+    const token = jwt.sign({ id }, process.env.SECRET, {
+      expiresIn: 240,
+    });
+    return res.json({ auth: true, token });
+  }
+  // senha incorreta
+
+  return res.json({ message: 'senha incorreta' });
+};
+
 module.exports = {
-  signUpGet, signUpPost, signUpPut, signUpDelete,
+  signUpGet, signUpPost, signUpPut, signUpDelete, login,
 };
