@@ -1,6 +1,5 @@
-const verify = require('./Utils/functionsJWT');
-
 const express = require('express');
+const verify = require('./Utils/functionsJWT');
 
 const routes = express.Router();
 

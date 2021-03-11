@@ -2,8 +2,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../Models/UserSchema');
 const validation = require('../Utils/validate');
-const hash = require('../Utils/hashPass')
-
+const hash = require('../Utils/hashPass');
 
 // ROTAS
 const signUpGet = async (req, res) => {
@@ -23,8 +22,8 @@ const signUpPost = async (req, res) => {
     return res.json({ message: errorMessage });
   }
 
-  try{
-    const user = await User.create({ 
+  try {
+    const user = await User.create({
       name,
       email,
       sector,
@@ -33,9 +32,8 @@ const signUpPost = async (req, res) => {
     });
     return res.json(user);
   } catch (error) {
-    return res.json({ duplicated: error.keyValue });  
+    return res.json({ duplicated: error.keyValue });
   }
-
 };
 
 const signUpPut = async (req, res) => {
@@ -60,12 +58,12 @@ const signUpPut = async (req, res) => {
     newPass = await hash.hashPass(pass);
   }
 
-  try{
+  try {
     const updateReturn = await User.findOneAndUpdate({ _id: id }, {
       name, email, sector, role, pass: newPass,
     },
     { new: true });
-      return res.json(updateReturn);
+    return res.json(updateReturn);
   } catch (error) {
     return res.json({ duplicated: error.keyValue });
   }

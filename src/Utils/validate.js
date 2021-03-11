@@ -19,11 +19,11 @@ const validateRole = (role) => {
 };
 
 const validatePass = (pass) => {
-  if(pass === undefined || pass.length < 6){
+  if (pass === undefined || pass.length < 6) {
     return false;
   }
   return true;
-}
+};
 
 const validate = (name, email, sector, role, pass) => {
   const err = [];
