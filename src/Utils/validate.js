@@ -10,17 +10,19 @@ const validateName = (name) => {
 
 const validateSector = (sector) => {
   const regex = /^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]{2,}$/;
-  return regex.test(sector);
+  return (regex.test(sector) && sector !== undefined);
 };
 
 const validateRole = (role) => {
   const regex = /^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]{2,}$/;
-  return regex.test(role);
+  return (regex.test(role) && role !== undefined);
 };
 
 const validatePass = (pass) => {
-  const regex = /^[0-9]{6,}$/;;
-  return regex.test(pass);
+  if(pass === undefined || pass.length < 6){
+    return false;
+  }
+  return true;
 }
 
 const validate = (name, email, sector, role, pass) => {

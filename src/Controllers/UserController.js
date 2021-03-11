@@ -1,8 +1,8 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../Models/UserSchema');
-const validation = require('../Utils/Validations');
-const hash = require('../Utils/HashPass')
+const validation = require('../Utils/validate');
+const hash = require('../Utils/hashPass')
 
 
 // ROTAS
@@ -24,17 +24,18 @@ const signUpPost = async (req, res) => {
   }
 
   try{
-  const user = await User.create({ 
-    name,
-    email,
-    sector,
-    role,
-    pass: await hash.hashPass(pass),
-  });
-  return res.json(user)
+    const user = await User.create({ 
+      name,
+      email,
+      sector,
+      role,
+      pass: await hash.hashPass(pass),
+    });
+    return res.json(user);
   } catch (error) {
     return res.json({ duplicated: error.keyValue });  
   }
+
 };
 
 const signUpPut = async (req, res) => {
@@ -43,8 +44,11 @@ const signUpPut = async (req, res) => {
     name, email, sector, role, pass,
   } = req.body;
   let newPass;
-  if (!validation.validate(name, email, sector, role, pass)) {
-    return res.json({ message: 'invalid' });
+
+  const errorMessage = validation.validate(name, email, sector, role, pass);
+
+  if (errorMessage.length) {
+    return res.json({ message: errorMessage });
   }
 
   const usuarioEncontrado = await User.findOne({ _id: id });
@@ -56,27 +60,15 @@ const signUpPut = async (req, res) => {
     newPass = await hash.hashPass(pass);
   }
 
-  const errorMessage = validation.validate(name, email, sector, role, pass);
-
-  if (errorMessage.length) {
-    return res.json({ message: errorMessage });
-  }
-
   try{
     const updateReturn = await User.findOneAndUpdate({ _id: id }, {
       name, email, sector, role, pass: newPass,
     },
-    { new: true }, (err, user) => {
-      if (err) {
-        return res.json(err);
-      }
-      return res.json(user);
-    });
-  } catch {
+    { new: true });
+      return res.json(updateReturn);
+  } catch (error) {
     return res.json({ duplicated: error.keyValue });
   }
-
-  return updateReturn;
 };
 
 const signUpDelete = async (req, res) => {
