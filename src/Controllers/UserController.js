@@ -13,7 +13,7 @@ const validateName = (name) => {
 };
 
 const validate = (name, email, sector, role, pass) => {
-  if (!validateName(name) || !validateEmail(email) || 
+  if (!validateName(name) || !validateEmail(email) ||
       pass === undefined || pass.length < 6 ||
       sector === undefined || sector.length === 0 ||
       role === undefined || role.lenght === 0) {
