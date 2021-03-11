@@ -7,6 +7,7 @@ const userSchema = new mongoose.Schema({
   },
   email: {
     type: String,
+    unique: true,
     require: [true],
   },
   role: {
@@ -22,5 +23,7 @@ const userSchema = new mongoose.Schema({
     require: [true],
   },
 });
+
+userSchema.set('timestamps', true);
 
 module.exports = mongoose.model('User', userSchema);
