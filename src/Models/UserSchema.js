@@ -9,7 +9,11 @@ const userSchema = new mongoose.Schema({
     type: String,
     require: [true],
   },
-  enroll: {
+  role: {
+    type: String,
+    require: [true],
+  },
+  sector: {
     type: String,
     require: [true],
   },

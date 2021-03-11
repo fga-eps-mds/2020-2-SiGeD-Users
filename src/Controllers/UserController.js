@@ -12,9 +12,11 @@ const validateName = (name) => {
   return (regex.test(name) && name !== undefined);
 };
 
-const validate = (name, email, enroll, pass) => {
-  if (!validateName(name) || !validateEmail(email) || pass === undefined
-    || enroll === undefined || pass.length < 6 || enroll.length === 0) {
+const validate = (name, email, sector, role, pass) => {
+  if (!validateName(name) || !validateEmail(email)
+      || pass === undefined || pass.length < 6
+      || sector === undefined || sector.length === 0
+      || role === undefined || role.lenght === 0) {
     return false;
   }
   return true;
@@ -34,17 +36,18 @@ const signUpGet = async (req, res) => {
 
 const signUpPost = async (req, res) => {
   const {
-    name, email, enroll, pass,
+    name, email, sector, role, pass,
   } = req.body;
 
-  if (!validate(name, email, enroll, pass)) {
+  if (!validate(name, email, sector, role, pass)) {
     return res.json({ message: 'invalid' });
   }
 
   const user = await User.create({
     name,
     email,
-    enroll,
+    sector,
+    role,
     pass: await hashPass(pass),
   });
 
@@ -54,10 +57,10 @@ const signUpPost = async (req, res) => {
 const signUpPut = async (req, res) => {
   const { id } = req.params;
   const {
-    name, email, enroll, pass,
+    name, email, sector, role, pass,
   } = req.body;
   let newPass;
-  if (!validate(name, email, enroll, pass)) {
+  if (!validate(name, email, sector, role, pass)) {
     return res.json({ message: 'invalid' });
   }
 
@@ -71,7 +74,7 @@ const signUpPut = async (req, res) => {
   }
 
   const updateReturn = await User.findOneAndUpdate({ _id: id }, {
-    name, email, enroll, pass: newPass,
+    name, email, sector, role, pass: newPass,
   },
   { new: true }, (err, user) => {
     if (err) {
