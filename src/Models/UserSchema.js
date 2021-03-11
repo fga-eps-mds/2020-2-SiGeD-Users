@@ -20,7 +20,7 @@ const userSchema = new mongoose.Schema({
   pass: {
     type: String,
     require: [true],
-  }
+  },
 });
 
 module.exports = mongoose.model('User', userSchema);
