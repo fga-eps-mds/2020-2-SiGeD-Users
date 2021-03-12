@@ -14,28 +14,43 @@ const validateSector = (sector) => {
 };
 
 const validateRole = (role) => {
-  const regex = /^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]{2,}$/;
-  return (regex.test(role) && role !== undefined);
+  let final = 0;
+  const valid = [];
+
+  valid.push('admin');
+  valid.push('professional');
+  valid.push('receptionist');
+
+  for(let i = 0; i < valid.length; i++){
+    if(role === valid[i]){
+      final++;
+    }
+  }
+
+  if(final === 1){
+    return true;
+  }
+  return false;
 };
 
 const validatePass = (pass) => {
-  if (pass === undefined || pass.length < 6) {
+  if (pass === undefined || pass.length < 6){
     return false;
   }
   return true;
 };
 
-const validate = (name, email, sector, role, pass) => {
+const validate = (name, email, role, sector, pass) => {
   const err = [];
 
   if (!validateName(name)) {
     err.push('invalid name');
   } if (!validateEmail(email)) {
     err.push('invalid email');
-  } if (!validateSector(sector)) {
-    err.push('invalid sector');
   } if (!validateRole(role)) {
     err.push('invalid role');
+  } if (!validateSector(sector)) {
+    err.push('invalid sector');
   } if (!validatePass(pass)) {
     err.push('invalid pass');
   }

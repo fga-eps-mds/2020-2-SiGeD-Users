@@ -13,10 +13,10 @@ const signUpGet = async (req, res) => {
 
 const signUpPost = async (req, res) => {
   const {
-    name, email, sector, role, pass,
+    name, email, role, sector, pass
   } = req.body;
 
-  const errorMessage = validation.validate(name, email, sector, role, pass);
+  const errorMessage = validation.validate(name, email, role, sector, pass);
 
   if (errorMessage.length) {
     return res.json({ message: errorMessage });
@@ -26,8 +26,8 @@ const signUpPost = async (req, res) => {
     const user = await User.create({
       name,
       email,
-      sector,
       role,
+      sector,
       pass: await hash.hashPass(pass),
     });
     return res.json(user);
@@ -39,11 +39,11 @@ const signUpPost = async (req, res) => {
 const signUpPut = async (req, res) => {
   const { id } = req.params;
   const {
-    name, email, sector, role, pass,
+    name, email, role, sector, pass
   } = req.body;
   let newPass;
 
-  const errorMessage = validation.validate(name, email, sector, role, pass);
+  const errorMessage = validation.validate(name, email, role, sector, pass);
 
   if (errorMessage.length) {
     return res.json({ message: errorMessage });
@@ -60,7 +60,7 @@ const signUpPut = async (req, res) => {
 
   try {
     const updateReturn = await User.findOneAndUpdate({ _id: id }, {
-      name, email, sector, role, pass: newPass,
+      name, email, role, sector, pass: newPass,
     },
     { new: true });
     return res.json(updateReturn);
