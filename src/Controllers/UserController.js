@@ -1,31 +1,8 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../Models/UserSchema');
-
-const validateEmail = (email) => {
-  const regex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  return (regex.test(email) && email !== undefined);
-};
-
-const validateName = (name) => {
-  const regex = /^[a-zA-Z ]{2,30}$/;
-  return (regex.test(name) && name !== undefined);
-};
-
-const validate = (name, email, sector, role, pass) => {
-  if (!validateName(name) || !validateEmail(email)
-      || pass === undefined || pass.length < 6
-      || sector === undefined || sector.length === 0
-      || role === undefined || role.lenght === 0) {
-    return false;
-  }
-  return true;
-};
-
-const hashPass = async (pass, saltRounds = 10) => {
-  const salt = await bcrypt.genSalt(saltRounds);
-  return bcrypt.hash(pass, salt);
-};
+const validation = require('../Utils/validate');
+const hash = require('../Utils/hashPass');
 
 // ROTAS
 const signUpGet = async (req, res) => {
@@ -36,32 +13,40 @@ const signUpGet = async (req, res) => {
 
 const signUpPost = async (req, res) => {
   const {
-    name, email, sector, role, pass,
+    name, email, role, sector, pass,
   } = req.body;
 
-  if (!validate(name, email, sector, role, pass)) {
-    return res.json({ message: 'invalid' });
+  const errorMessage = validation.validate(name, email, role, sector, pass);
+
+  if (errorMessage.length) {
+    return res.json({ message: errorMessage });
   }
 
-  const user = await User.create({
-    name,
-    email,
-    sector,
-    role,
-    pass: await hashPass(pass),
-  });
-
-  return res.json(user);
+  try {
+    const user = await User.create({
+      name,
+      email,
+      role,
+      sector,
+      pass: await hash.hashPass(pass),
+    });
+    return res.json(user);
+  } catch (error) {
+    return res.json({ duplicated: error.keyValue });
+  }
 };
 
 const signUpPut = async (req, res) => {
   const { id } = req.params;
   const {
-    name, email, sector, role, pass,
+    name, email, role, sector, pass,
   } = req.body;
   let newPass;
-  if (!validate(name, email, sector, role, pass)) {
-    return res.json({ message: 'invalid' });
+
+  const errorMessage = validation.validate(name, email, role, sector, pass);
+
+  if (errorMessage.length) {
+    return res.json({ message: errorMessage });
   }
 
   const usuarioEncontrado = await User.findOne({ _id: id });
@@ -70,20 +55,18 @@ const signUpPut = async (req, res) => {
   if (await bcrypt.compare(req.body.pass, usuarioEncontrado.pass)) {
     newPass = usuarioEncontrado.pass;
   } else {
-    newPass = await hashPass(pass);
+    newPass = await hash.hashPass(pass);
   }
 
-  const updateReturn = await User.findOneAndUpdate({ _id: id }, {
-    name, email, sector, role, pass: newPass,
-  },
-  { new: true }, (err, user) => {
-    if (err) {
-      return res.json(err);
-    }
-    return res.json(user);
-  });
-
-  return updateReturn;
+  try {
+    const updateReturn = await User.findOneAndUpdate({ _id: id }, {
+      name, email, role, sector, pass: newPass,
+    },
+    { new: true });
+    return res.json(updateReturn);
+  } catch (error) {
+    return res.json({ duplicated: error.keyValue });
+  }
 };
 
 const signUpDelete = async (req, res) => {
