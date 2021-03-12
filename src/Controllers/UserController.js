@@ -13,7 +13,7 @@ const signUpGet = async (req, res) => {
 
 const signUpPost = async (req, res) => {
   const {
-    name, email, role, sector, pass
+    name, email, role, sector, pass,
   } = req.body;
 
   const errorMessage = validation.validate(name, email, role, sector, pass);
@@ -39,7 +39,7 @@ const signUpPost = async (req, res) => {
 const signUpPut = async (req, res) => {
   const { id } = req.params;
   const {
-    name, email, role, sector, pass
+    name, email, role, sector, pass,
   } = req.body;
   let newPass;
 

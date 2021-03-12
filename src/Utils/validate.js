@@ -21,20 +21,20 @@ const validateRole = (role) => {
   valid.push('professional');
   valid.push('receptionist');
 
-  for(let i = 0; i < valid.length; i++){
-    if(role === valid[i]){
-      final++;
+  for (let i = 0; i < valid.length; i + 1) {
+    if (role === valid[i]) {
+      final = +1;
     }
   }
 
-  if(final === 1){
+  if (final === 1) {
     return true;
   }
   return false;
 };
 
 const validatePass = (pass) => {
-  if (pass === undefined || pass.length < 6){
+  if (pass === undefined || pass.length < 6) {
     return false;
   }
   return true;
