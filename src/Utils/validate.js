@@ -14,20 +14,9 @@ const validateSector = (sector) => {
 };
 
 const validateRole = (role) => {
-  let final = 0;
-  const valid = [];
+  const valid = ['admin', 'professional', 'receptionist'];
 
-  valid.push('admin');
-  valid.push('professional');
-  valid.push('receptionist');
-
-  for (let i = 0; i < valid.length; i + 1) {
-    if (role === valid[i]) {
-      final = +1;
-    }
-  }
-
-  if (final === 1) {
+  if (valid.includes(role)) {
     return true;
   }
   return false;
