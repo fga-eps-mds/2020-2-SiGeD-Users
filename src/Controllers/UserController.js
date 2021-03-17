@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const moment = require('moment-timezone');
 const User = require('../Models/UserSchema');
 const validation = require('../Utils/validate');
 const hash = require('../Utils/hashPass');
@@ -29,6 +30,8 @@ const signUpPost = async (req, res) => {
       role,
       sector,
       pass: await hash.hashPass(pass),
+      createdAt: moment.utc(moment.tz('America/Sao_Paulo').format('YYYY-MM-DDTHH:mm:ss')).toDate(),
+      updatedAt: moment.utc(moment.tz('America/Sao_Paulo').format('YYYY-MM-DDTHH:mm:ss')).toDate(),
     });
     return res.json(user);
   } catch (error) {
@@ -60,7 +63,12 @@ const signUpPut = async (req, res) => {
 
   try {
     const updateReturn = await User.findOneAndUpdate({ _id: id }, {
-      name, email, role, sector, pass: newPass,
+      name,
+      email,
+      role,
+      sector,
+      pass: newPass,
+      updatedAt: moment.utc(moment.tz('America/Sao_Paulo').format('YYYY-MM-DDTHH:mm:ss')).toDate(),
     },
     { new: true });
     return res.json(updateReturn);
