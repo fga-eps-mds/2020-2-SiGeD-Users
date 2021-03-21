@@ -9,7 +9,6 @@ const hash = require('../Utils/hashPass');
 
 const access = async (req, res) => {
   const { id } = req.params;
-  
   const user = await User.findOne({ _id: id });
 
   return res.json(user);
