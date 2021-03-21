@@ -9,9 +9,12 @@ const hash = require('../Utils/hashPass');
 
 const access = async (req, res) => {
   const { id } = req.params;
-  const user = await User.findOne({ _id: id });
-
-  return res.json(user);
+  try {
+    const user = await User.findOne({ _id: id });
+    return res.json(user);
+  } catch (error) {
+    return res.json({ error });
+  }
 };
 
 const signUpGet = async (req, res) => {
