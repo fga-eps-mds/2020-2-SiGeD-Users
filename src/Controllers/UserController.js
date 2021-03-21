@@ -13,7 +13,7 @@ const access = async (req, res) => {
     const user = await User.findOne({ _id: id });
     return res.json(user);
   } catch (error) {
-    return res.json({ error });
+    return res.status(400).json(error);
   }
 };
 
