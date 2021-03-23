@@ -19,7 +19,7 @@ mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
     console.log('MongoDB is connected');
   })
   .catch((err) => {
-    console.log('Error on connecting to MongoDB', err);
+    console.error('Error on connecting to MongoDB', err);
   });
 
 const app = express();

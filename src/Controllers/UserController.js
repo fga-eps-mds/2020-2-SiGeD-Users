@@ -63,11 +63,11 @@ const signUpPut = async (req, res) => {
     return res.json({ message: errorMessage });
   }
 
-  const usuarioEncontrado = await User.findOne({ _id: id });
+  const findUser = await User.findOne({ _id: id });
 
   // Senha nao se altera
-  if (await bcrypt.compare(req.body.pass, usuarioEncontrado.pass)) {
-    newPass = usuarioEncontrado.pass;
+  if (await bcrypt.compare(req.body.pass, findUser.pass)) {
+    newPass = findUser.pass;
   } else {
     newPass = await hash.hashPass(pass);
   }
@@ -100,24 +100,21 @@ const signUpDelete = async (req, res) => {
 };
 
 const login = async (req, res) => {
-  const usuario = await User.findOne({ email: req.body.email });
+  const user = await User.findOne({ email: req.body.email });
 
-  // usuario invalido
-  if (usuario == null) {
-    return res.json({ message: 'nao existe' });
+  if (user == null) {
+    return res.json({ message: 'The user does not exits.' });
   }
 
-  // senha correta
-  if (await bcrypt.compare(req.body.pass, usuario.pass)) {
-    const { id } = usuario;
+  if (await bcrypt.compare(req.body.pass, user.pass)) {
+    const { id } = user;
     const token = jwt.sign({ id }, process.env.SECRET, {
       expiresIn: 240,
     });
     return res.json({ auth: true, token });
   }
-  // senha incorreta
 
-  return res.json({ message: 'senha incorreta' });
+  return res.json({ message: 'Incorret password.' });
 };
 
 module.exports = {
