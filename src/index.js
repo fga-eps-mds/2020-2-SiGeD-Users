@@ -1,20 +1,32 @@
-const { request } = require('express')
-const express = require('express')
-const routes = require('./routes')
-const mongoose = require('mongoose')
+const express = require('express');
+const mongoose = require('mongoose');
+const cors = require('cors');
+const routes = require('./routes');
+require('dotenv-safe').config();
 
-const port = 3001
+const {
+  DB_USER,
+  DB_PASS,
+  DB_NAME,
+  DB_HOST,
+  PORT,
+} = process.env;
 
-// mongoose.connect(
-//     'mongodb://localhost',
-//     {useNewUrlParser: true, useUnifiedTopology: true}
-// )
+const url = `mongodb://${DB_USER}:${DB_PASS}@${DB_HOST}/${DB_NAME}`;
 
-const app = express()
+mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => {
+    console.log('MongoDB is connected');
+  })
+  .catch((err) => {
+    console.error('Error on connecting to MongoDB', err);
+  });
 
-app.use(express.json())
-app.use(routes)
+const app = express();
+app.use(cors());
+app.use(express.json());
+app.use(routes);
 
-app.listen(port, () => {
-    console.log(`Server running on port ${port}`)
-})
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
