@@ -6,6 +6,17 @@ const validation = require('../Utils/validate');
 const hash = require('../Utils/hashPass');
 
 // ROTAS
+
+const access = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const user = await User.findOne({ _id: id });
+    return res.json(user);
+  } catch (error) {
+    return res.status(400).json(error);
+  }
+};
+
 const signUpGet = async (req, res) => {
   const users = await User.find();
 
@@ -107,5 +118,5 @@ const login = async (req, res) => {
 };
 
 module.exports = {
-  signUpGet, signUpPost, signUpPut, signUpDelete, login,
+  signUpGet, signUpPost, signUpPut, signUpDelete, login, access,
 };
