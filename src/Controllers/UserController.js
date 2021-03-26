@@ -5,7 +5,6 @@ const User = require('../Models/UserSchema');
 const validation = require('../Utils/validate');
 const hash = require('../Utils/hashPass');
 
-// ROTAS
 const signUpGet = async (req, res) => {
   const users = await User.find();
 
@@ -54,7 +53,6 @@ const signUpPut = async (req, res) => {
 
   const usuarioEncontrado = await User.findOne({ _id: id });
 
-  // Senha nao se altera
   if (await bcrypt.compare(req.body.pass, usuarioEncontrado.pass)) {
     newPass = usuarioEncontrado.pass;
   } else {
@@ -91,12 +89,10 @@ const signUpDelete = async (req, res) => {
 const login = async (req, res) => {
   const usuario = await User.findOne({ email: req.body.email });
 
-  // usuario invalido
   if (usuario == null) {
-    return res.json({ message: 'nao existe' });
+    return res.json({ message: 'user not found' });
   }
 
-  // senha correta
   if (await bcrypt.compare(req.body.pass, usuario.pass)) {
     const { id } = usuario;
     const token = jwt.sign({ id }, process.env.SECRET, {
@@ -104,9 +100,8 @@ const login = async (req, res) => {
     });
     return res.json({ auth: true, token });
   }
-  // senha incorreta
 
-  return res.json({ message: 'senha incorreta' });
+  return res.json({ message: 'wrong pass' });
 };
 
 module.exports = {
