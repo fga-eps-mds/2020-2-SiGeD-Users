@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  api_users:
+  api:
     container_name: backend
     build: .
     ports:
@@ -15,10 +15,10 @@ services:
     networks: 
       - backend
     depends_on:
-      - database_users
+      - database
 
-  database_users:
-    container_name: database_users
+  database:
+    container_name: database
     image: mongo:4.4
     restart: always
     environment:
