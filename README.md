@@ -1,4 +1,4 @@
-# API de Usuários
+# API de Usuários 
 [![License: GPL-3.0](https://img.shields.io/badge/License-GPL3-blue.svg)](https://opensource.org/licenses/gpl-3.0.html)
 
 Essa API faz parte da arquitetura de microsserviços do projeto [`NomeDoProjeto`](https://github.com/fga-eps-mds/2020-2-G4), sua funcionalidade é possibilitar o controle dos dados dos usuários. 
