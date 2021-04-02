@@ -1,11 +1,7 @@
-
-# This is a basic workflow to help you get started with Actions
-
 name: Release
 
-# Controls when the action will run. 
 on:
-  # Triggers the workflow on push or pull request events but only for the main branch
+
   push:
     branches: [ master ]
   pull_request:
@@ -13,21 +9,21 @@ on:
     
 jobs:
   pre-release:
-    name: "Pre Release"
+    name: "Release"
     runs-on: "ubuntu-latest"
     
     steps:
       - uses: actions/checkout@v2
       - run: mkdir -p /tmp/sonar/
-      - run: curl --location --request GET "${{ secrets.URL }}" > /tmp/sonar/sonar_cloud.json
+      - run: curl --location --request GET "${{ secrets.URL }}" > /tmp/sonar/users_sonar.json
       - uses: actions/upload-artifact@v2
         with:
-          name: sonar_cloud.json
-          path: /tmp/sonar/sonar_cloud.json
+          name: users_sonar.json
+          path: /tmp/sonar/users_sonar.json
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: Release ${{ github.ref }}
+          automatic_release_tag: "latest"
           prerelease: False
           files: |
-            /tmp/sonar/sonar_cloud.json
+            /tmp/sonar/users_sonar.json
