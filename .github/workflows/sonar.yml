@@ -27,7 +27,7 @@ jobs:
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: Release ${{ steps.tag_version.outputs.new_tag }}
+          automatic_release_tag: Release ${{ github.ref }}
           prerelease: False
           files: |
             /tmp/sonar/sonar_cloud.json
