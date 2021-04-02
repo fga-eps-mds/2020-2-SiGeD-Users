@@ -19,7 +19,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: mkdir -p /tmp/sonar/
-      - run: curl --location --request POST "${{ secrets.URL }}" > /tmp/sonar/sonar_cloud.json
+      - run: curl --location --request GET "${{ secrets.URL }}" > /tmp/sonar/sonar_cloud.json
       - uses: actions/upload-artifact@v2
         with:
           name: sonar_cloud.json
