@@ -22,7 +22,7 @@ jobs:
           path: /tmp/sonar/users_sonar.json
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          repo_token: "${{ secrets.ACCESS_TOKEN }}"
           automatic_release_tag: "latest"
           title: "Release"
           prerelease: False
