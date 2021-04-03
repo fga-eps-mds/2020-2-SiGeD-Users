@@ -23,8 +23,7 @@ jobs:
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "v0.2"
-          title: "Release 2"
+          automatic_release_tag: "v0.3"
           prerelease: False
           files: |
             /tmp/sonar/users_sonar.json
