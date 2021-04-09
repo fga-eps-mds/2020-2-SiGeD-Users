@@ -1,30 +1,25 @@
 name: Release
 
 on:
-
-  push:
-    branches: [ master ]
   pull_request:
-    branches: [ master ]
+    types: [ closed ]
     
 jobs:
-  pre-release:
-    name: "Release"
-    runs-on: "ubuntu-latest"
-    
-    steps:
-      - uses: actions/checkout@v2
-      - run: mkdir -p /tmp/sonar/
-      - run: curl --location --request GET "${{ secrets.URL }}" > /tmp/sonar/users_sonar.json
-      - uses: actions/upload-artifact@v2
+  release:
+    if: github.event.pull_request.merged == true
+      name: "Release"
+      runs-on: "ubuntu-latest"
+
+      steps:
+      - run: cd scripts
+      - name: Create .env file
+        uses: SpicyPizza/create-envfile@v1
         with:
-          name: users_sonar.json
-          path: /tmp/sonar/users_sonar.json
-      - uses: "marvinpinto/action-automatic-releases@latest"
-        with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "latest"
-          title: Release 3
-          prerelease: False
-          files: |
-            /tmp/sonar/users_sonar.json
+          envkey_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          envkey_URL: ${{ secrets.URL }}
+          envkey_RELEASE_MINOR: ${{ contains(github.event.pull_request.labels.*.name, 'Minor') }}
+      
+        - name: Create Release
+        - run: yarn install
+        - run: node release.js
+
