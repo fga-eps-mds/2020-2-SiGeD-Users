@@ -111,7 +111,10 @@ const login = async (req, res) => {
     const token = jwt.sign({ id }, process.env.SECRET, {
       expiresIn: 240,
     });
-    return res.json({ auth: true, token });
+
+    const profile = { ...user._doc };
+    delete profile.pass;
+    return res.json({ auth: true, token, profile });
   }
 
   return res.json({ message: 'Incorret password.' });
