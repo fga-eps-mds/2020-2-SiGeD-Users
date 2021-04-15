@@ -116,3 +116,5 @@ dist
 
 yarn.lock
 package-lock.json
+
+scripts/.env
