@@ -57,7 +57,7 @@ const signUpPut = async (req, res) => {
   } = req.body;
   let newPass;
 
-  const errorMessage = validation.validate(name, email, role, sector, pass);
+  const errorMessage = validation.validate(name, email, role, pass);
 
   if (errorMessage.length) {
     return res.json({ message: errorMessage });
@@ -109,7 +109,7 @@ const login = async (req, res) => {
   if (await bcrypt.compare(req.body.pass, user.pass)) {
     const { id } = user;
     const token = jwt.sign({ id }, process.env.SECRET, {
-      expiresIn: 240,
+      expiresIn: 43200,
     });
     return res.json({ auth: true, token });
   }
