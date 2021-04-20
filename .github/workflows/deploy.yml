@@ -16,7 +16,7 @@ jobs:
         username: ${{ secrets.USER }}
         key: ${{ secrets.KEY }}
         script: |
-          cd 2020-2-G4-Users
+          cd 2020-2-SiGeD-Users
           docker-compose down
           git checkout master
           git pull origin master
