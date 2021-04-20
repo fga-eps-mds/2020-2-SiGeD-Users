@@ -8,11 +8,6 @@ const validateName = (name) => {
   return (regex.test(name) && name !== undefined);
 };
 
-const validateSector = (sector) => {
-  const regex = /^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]{2,}$/;
-  return (regex.test(sector) && sector !== undefined);
-};
-
 const validateRole = (role) => {
   const valid = ['admin', 'professional', 'receptionist'];
 
@@ -29,7 +24,7 @@ const validatePass = (pass) => {
   return true;
 };
 
-const validate = (name, email, role, sector, pass) => {
+const validate = (name, email, role, pass) => {
   const err = [];
 
   if (!validateName(name)) {
@@ -38,8 +33,6 @@ const validate = (name, email, role, sector, pass) => {
     err.push('invalid email');
   } if (!validateRole(role)) {
     err.push('invalid role');
-  } if (!validateSector(sector)) {
-    err.push('invalid sector');
   } if (!validatePass(pass)) {
     err.push('invalid pass');
   }
