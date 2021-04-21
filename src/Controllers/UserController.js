@@ -1,9 +1,11 @@
+const crypto = require('crypto');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const moment = require('moment-timezone');
 const User = require('../Models/UserSchema');
 const validation = require('../Utils/validate');
 const hash = require('../Utils/hashPass');
+const mailer = require('../Utils/mailer');
 
 // ROTAS
 
@@ -25,10 +27,20 @@ const signUpGet = async (req, res) => {
 
 const signUpPost = async (req, res) => {
   const {
-    name, email, role, sector, pass,
+    name, email, role, sector,
   } = req.body;
+  const { transporter } = mailer;
 
-  const errorMessage = validation.validate(name, email, role, sector, pass);
+  const temporaryPassword = crypto.randomBytes(8).toString('hex');
+
+  transporter.sendMail({
+    from: process.env.email,
+    to: email,
+    subject: 'Senha temporária SiGeD',
+    text: `A sua senha temporária é: ${temporaryPassword}!`,
+  });
+
+  const errorMessage = validation.validate(name, email, role, sector, temporaryPassword);
 
   if (errorMessage.length) {
     return res.json({ message: errorMessage });
@@ -40,7 +52,7 @@ const signUpPost = async (req, res) => {
       email,
       role,
       sector,
-      pass: await hash.hashPass(pass),
+      pass: await hash.hashPass(temporaryPassword),
       createdAt: moment.utc(moment.tz('America/Sao_Paulo').format('YYYY-MM-DDTHH:mm:ss')).toDate(),
       updatedAt: moment.utc(moment.tz('America/Sao_Paulo').format('YYYY-MM-DDTHH:mm:ss')).toDate(),
     });
