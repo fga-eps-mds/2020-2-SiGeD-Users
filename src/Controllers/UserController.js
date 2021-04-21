@@ -132,6 +132,31 @@ const login = async (req, res) => {
   return res.json({ message: 'Incorret password.' });
 };
 
+const recoverPassword = async (req, res) => {
+  const { email } = req.body;
+  const { transporter } = mailer;
+
+  const temporaryPassword = crypto.randomBytes(8).toString('hex');
+
+  const emailFound = await User.find({ email });
+
+  if (emailFound.length === 0) {
+    return res.status(404).json({ error: 'Could not find an user with this email' });
+  }
+
+  try {
+    transporter.sendMail({
+      from: process.env.email,
+      to: email,
+      subject: 'Senha temporária SiGeD',
+      text: `A sua senha temporária é: ${temporaryPassword}!`,
+    });
+    return res.json({ message: 'Email sent.' });
+  } catch {
+    return res.status(400).json({ error: 'It was not possible to send the email.' });
+  }
+};
+
 module.exports = {
-  signUpGet, signUpPost, signUpPut, signUpDelete, login, access,
+  signUpGet, signUpPost, signUpPut, signUpDelete, login, access, recoverPassword,
 };
