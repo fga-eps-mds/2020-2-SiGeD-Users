@@ -4,8 +4,8 @@ const validateEmail = (email) => {
 };
 
 const validateName = (name) => {
-  const regex = /^[a-zA-Z ]{2,30}$/;
-  return (regex.test(name) && name !== undefined);
+  const regex = /^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]{2,}$/;
+  return regex.test(name);
 };
 
 const validateRole = (role) => {
