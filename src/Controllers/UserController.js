@@ -77,7 +77,6 @@ const signUpPut = async (req, res) => {
 
   const findUser = await User.findOne({ _id: id });
 
-  // Senha nao se altera
   if (await bcrypt.compare(req.body.pass, findUser.pass)) {
     newPass = findUser.pass;
   } else {
@@ -93,7 +92,7 @@ const signUpPut = async (req, res) => {
       pass: newPass,
       updatedAt: moment.utc(moment.tz('America/Sao_Paulo').format('YYYY-MM-DDTHH:mm:ss')).toDate(),
     },
-    { new: true });
+      { new: true });
     return res.json(updateReturn);
   } catch (error) {
     return res.json({ duplicated: error.keyValue });
@@ -138,9 +137,12 @@ const recoverPassword = async (req, res) => {
 
   const temporaryPassword = crypto.randomBytes(8).toString('hex');
 
-  const emailFound = await User.find({ email });
+  const user = await User.findOneAndUpdate({ email }, {
+    pass: await hash.hashPass(temporaryPassword),
+    temporaryPassword: true,
+  }, { new: true })
 
-  if (emailFound.length === 0) {
+  if (!user) {
     return res.status(404).json({ error: 'Could not find an user with this email' });
   }
 
@@ -151,10 +153,12 @@ const recoverPassword = async (req, res) => {
       subject: 'Senha temporária SiGeD',
       text: `A sua senha temporária é: ${temporaryPassword}!`,
     });
+
     return res.json({ message: 'Email sent.' });
   } catch {
     return res.status(400).json({ error: 'It was not possible to send the email.' });
   }
+
 };
 
 module.exports = {
