@@ -39,4 +39,17 @@ const validate = (name, email, role, pass) => {
   return err;
 };
 
-module.exports = { validate, validatePass };
+const validatePut = (name, email, role) => {
+  const err = [];
+
+  if (!validateName(name)) {
+    err.push('invalid name');
+  } if (!validateEmail(email)) {
+    err.push('invalid email');
+  } if (!validateRole(role)) {
+    err.push('invalid role');
+  }
+  return err;
+};
+
+module.exports = { validate, validatePass, validatePut };

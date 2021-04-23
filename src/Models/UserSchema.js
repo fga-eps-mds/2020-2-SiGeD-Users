@@ -33,7 +33,7 @@ const userSchema = new mongoose.Schema({
   temporaryPassword: {
     type: Boolean,
     require: false,
-    default: false
+    default: true,
   },
 });
 
