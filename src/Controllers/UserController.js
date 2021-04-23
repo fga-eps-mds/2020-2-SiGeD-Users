@@ -158,9 +158,36 @@ const recoverPassword = async (req, res) => {
   } catch {
     return res.status(400).json({ error: 'It was not possible to send the email.' });
   }
+};
 
+const changePassword = async (req, res) => {
+  const { id } = req.params;
+  const {
+    pass,
+  } = req.body;
+
+  const validateResult = validation.validatePass(pass);
+
+  if (!validateResult) {
+    return res.status(400).json({ error: 'Password too short' });
+  }
+
+  const newPass = await hash.hashPass(pass);
+
+  try {
+    const updateReturn = await User.findOneAndUpdate({ _id: id }, {
+      pass: newPass,
+      temporaryPassword: false,
+      updatedAt: moment.utc(moment.tz('America/Sao_Paulo').format('YYYY-MM-DDTHH:mm:ss')).toDate(),
+    },
+    { new: true });
+    delete updateReturn._doc.pass;
+    return res.json(updateReturn);
+  } catch (error) {
+    return res.status(404).json({ error: 'It was not possible to find an user with this id' });
+  }
 };
 
 module.exports = {
-  signUpGet, signUpPost, signUpPut, signUpDelete, login, access, recoverPassword,
+  signUpGet, signUpPost, signUpPut, signUpDelete, login, access, recoverPassword, changePassword,
 };

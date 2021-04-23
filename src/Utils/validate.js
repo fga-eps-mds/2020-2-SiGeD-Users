@@ -39,4 +39,4 @@ const validate = (name, email, role, pass) => {
   return err;
 };
 
-module.exports = { validate };
+module.exports = { validate, validatePass };
