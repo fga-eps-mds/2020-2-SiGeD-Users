@@ -19,6 +19,8 @@ jobs:
           cd 2020-2-SiGeD-Users
           docker-compose down
           git checkout master
+          git checkout .
           git pull origin master
+          cp deploy.env .env
           docker-compose up --build -d
 
