@@ -16,13 +16,15 @@
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
     "moment-timezone": "^0.5.33",
-    "mongoose": "^5.11.17"
+    "mongoose": "^5.11.17",
+    "nodemailer": "^6.5.0"
   },
   "devDependencies": {
     "eslint": "^7.21.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-plugin-import": "^2.22.1",
     "jest": "^26.6.3",
-    "nodemon": "^2.0.7"
+    "nodemon": "^2.0.7",
+    "supertest": "^6.1.3"
   }
 }

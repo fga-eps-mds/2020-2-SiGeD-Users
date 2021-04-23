@@ -30,6 +30,11 @@ const userSchema = new mongoose.Schema({
     type: Date,
     require: [true],
   },
+  temporaryPassword: {
+    type: Boolean,
+    require: false,
+    default: true,
+  },
 });
 
 module.exports = mongoose.model('User', userSchema);
