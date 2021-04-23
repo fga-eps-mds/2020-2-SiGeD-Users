@@ -37,7 +37,7 @@ const signUpPost = async (req, res) => {
     from: process.env.email,
     to: email,
     subject: 'Senha temporária SiGeD',
-    text: `A sua senha temporária é: ${temporaryPassword}!`,
+    text: `A sua senha temporária é: ${temporaryPassword}`,
   });
 
   const errorMessage = validation.validate(name, email, role, temporaryPassword);
@@ -146,7 +146,7 @@ const recoverPassword = async (req, res) => {
       from: process.env.email,
       to: email,
       subject: 'Senha temporária SiGeD',
-      text: `A sua senha temporária é: ${temporaryPassword}!`,
+      text: `A sua senha temporária é: ${temporaryPassword}`,
     });
 
     return res.json({ message: 'Email sent.' });
