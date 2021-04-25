@@ -69,7 +69,7 @@ const signUpPut = async (req, res) => {
     name, email, role, sector,
   } = req.body;
 
-  const errorMessage = validation.validatePut(name, email, role);
+  const errorMessage = validation.validate(name, email, role);
 
   if (errorMessage.length) {
     return res.status(400).json({ message: errorMessage });

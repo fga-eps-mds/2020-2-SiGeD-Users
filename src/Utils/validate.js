@@ -18,28 +18,13 @@ const validateRole = (role) => {
 };
 
 const validatePass = (pass) => {
-  if (pass === undefined || pass.length < 6) {
+  if (!pass || pass.length < 6) {
     return false;
   }
   return true;
 };
 
-const validate = (name, email, role, pass) => {
-  const err = [];
-
-  if (!validateName(name)) {
-    err.push('invalid name');
-  } if (!validateEmail(email)) {
-    err.push('invalid email');
-  } if (!validateRole(role)) {
-    err.push('invalid role');
-  } if (!validatePass(pass)) {
-    err.push('invalid pass');
-  }
-  return err;
-};
-
-const validatePut = (name, email, role) => {
+const validate = (name, email, role) => {
   const err = [];
 
   if (!validateName(name)) {
@@ -52,4 +37,4 @@ const validatePut = (name, email, role) => {
   return err;
 };
 
-module.exports = { validate, validatePass, validatePut };
+module.exports = { validate, validatePass };
