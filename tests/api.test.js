@@ -171,15 +171,29 @@ describe('Sample Test', () => {
       expect(res.body).toEqual({ auth: false, message: 'It was not possible to authenticate the token.' });
   });
 
-  it('Recover password error', async (done) => {
-    const emailForRecoverPass = {
+  it('Recover password', async (done) => {
+    const recoverPassValid = {
+      email: 'jacquin2@gmail.com'
+    }
+
+    const res = await request(app)
+    .post(`/recover-password`)
+    .set('x-access-token', token)
+    .send(recoverPassValid);
+    expect(res.statusCode).toBe(200);
+    expect(res.body).toEqual({ message: 'Email sent.' });
+    done();
+  });
+
+  it('Recover password invalid password', async (done) => {
+    const recoverPassInvalidPass = {
       email: 'jacquin1@gmail.com'
     }
 
     const res = await request(app)
     .post(`/recover-password`)
     .set('x-access-token', token)
-    .send(emailForRecoverPass);
+    .send(recoverPassInvalidPass);
     expect(res.statusCode).toBe(404);
     expect(res.body.error).toEqual('It was not possible to find an user with this email.');
     done();
@@ -214,6 +228,42 @@ describe('Sample Test', () => {
     expect(res.body.error).toBe('It was not possible to find an user with this id.');
     done();
   });
+
+  it('Login with valid user', async () => {
+    const existentUser = {
+      email: 'jacquin2@gmail.com',
+      pass: '1234432'
+    };
+    const res = await request(app).post('/login').send(existentUser);
+    expect(res.statusCode).toBe(200);
+    expect(res.body.auth).toBe(true);
+    expect(res.body.profile.temporaryPassword).toBe(false);
+    expect(res.body.profile._id).toBe(id);
+    expect(res.body.profile.name).toBe('Jacquin Junior');
+    expect(res.body.profile.email).toBe('jacquin2@gmail.com');
+    expect(res.body.profile.role).toBe(user.role);
+    expect(res.body.profile.sector).toBe(user.sector);
+  });
+
+  it('Login inexistent user', async () => {
+    const inexistentUser = {
+      email: 'jacquin@gmail',
+      pass: '12345'
+    };
+    const res = await request(app).post('/login').send(inexistentUser);
+    expect(res.statusCode).toBe(200);
+    expect(res.body).toEqual({ "message":"The user does not exits." });
+  });
+
+  it('Login with wrong password', async () => {
+    const userWithWrongPass = {
+      email: 'jacquin2@gmail.com',
+      pass: '123456'
+    };
+    const res = await request(app).post('/login').send(userWithWrongPass);
+    expect(res.statusCode).toBe(200);
+    expect(res.body).toEqual({ "message":"Incorret password." });
+  })
 
   it('Delete user id error', async (done) => {
     const res = await request(app).delete(`/users/delete/123456789098766543`).set('x-access-token', token)
