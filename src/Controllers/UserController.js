@@ -54,6 +54,11 @@ const signUpPost = async (req, res) => {
       sector,
       pass: await hash.hashPass(temporaryPassword),
       temporaryPassword: true,
+      /*photo: {
+        name: req.file.originalname,
+        size: req.file.size,
+        key: req.file.filename,
+      },*/
       createdAt: moment.utc(moment.tz('America/Sao_Paulo').format('YYYY-MM-DDTHH:mm:ss')).toDate(),
       updatedAt: moment.utc(moment.tz('America/Sao_Paulo').format('YYYY-MM-DDTHH:mm:ss')).toDate(),
     });

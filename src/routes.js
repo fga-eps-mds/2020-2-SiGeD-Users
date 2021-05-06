@@ -1,5 +1,7 @@
 const express = require('express');
 const verify = require('./Utils/functionsJWT');
+const multer = require("multer");
+const multerConfig = require("./config/multer");
 
 const routes = express.Router();
 
@@ -8,7 +10,7 @@ const { verifyJWT } = require('./Utils/functionsJWT');
 
 routes.get('/users/:id', verifyJWT, UserController.access);
 routes.get('/users', verify.verifyJWT, UserController.signUpGet);
-routes.post('/signup', UserController.signUpPost);
+routes.post('/signup', multer(multerConfig).single("file"), UserController.signUpPost);
 routes.post('/login', UserController.login);
 routes.post('/recover-password', UserController.recoverPassword);
 routes.put('/change-password/:id', verify.verifyJWT, UserController.changePassword);
