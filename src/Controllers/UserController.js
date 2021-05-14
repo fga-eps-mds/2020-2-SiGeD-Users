@@ -33,13 +33,6 @@ const signUpPost = async (req, res) => {
 
   const temporaryPassword = crypto.randomBytes(8).toString('hex');
 
-  transporter.sendMail({
-    from: process.env.email,
-    to: email,
-    subject: 'Senha temporária SiGeD',
-    text: `A sua senha temporária é: ${temporaryPassword}`,
-  });
-
   const errorMessage = validation.validate(name, email, role, temporaryPassword);
 
   if (errorMessage.length) {
@@ -56,6 +49,13 @@ const signUpPost = async (req, res) => {
       temporaryPassword: true,
       createdAt: moment.utc(moment.tz('America/Sao_Paulo').format('YYYY-MM-DDTHH:mm:ss')).toDate(),
       updatedAt: moment.utc(moment.tz('America/Sao_Paulo').format('YYYY-MM-DDTHH:mm:ss')).toDate(),
+    });
+
+    transporter.sendMail({
+      from: process.env.email,
+      to: email,
+      subject: 'Senha temporária SiGeD',
+      text: `A sua senha temporária é: ${temporaryPassword}`,
     });
     return res.json(user);
   } catch (error) {
