@@ -183,6 +183,20 @@ const changePassword = async (req, res) => {
   }
 };
 
+const newestFourUsersGet = async (req, res) => {
+  const users = await User.find().limit(4).sort({ createdAt: -1 });
+
+  return res.status(200).json(users);
+};
+
 module.exports = {
-  signUpGet, signUpPost, signUpPut, signUpDelete, login, access, recoverPassword, changePassword,
+  signUpGet,
+  signUpPost,
+  signUpPut,
+  signUpDelete,
+  login,
+  access,
+  recoverPassword,
+  changePassword,
+  newestFourUsersGet,
 };
