@@ -18,12 +18,62 @@ describe('Sample Test', () => {
     image: '1234567ahshdess',
   };
 
+  const user1 = {
+    name: 'Usuario Um',
+    email: 'um@gmail.com',
+    role: 'admin',
+    sector: '60660af3786b3c00470115c9',
+  };
+
+  const user2 = {
+    name: 'Usuario Dois',
+    email: 'dois@gmail.com',
+    role: 'admin',
+    sector: '60660af3786b3c00470115c9',
+  };
+
+  const user3 = {
+    name: 'Usuario Três',
+    email: 'tres@gmail.com',
+    role: 'admin',
+    sector: '60660af3786b3c00470115c9',
+  };
+
+  const user4 = {
+    name: 'Usuario Quatro',
+    email: 'quatro@gmail.com',
+    role: 'admin',
+    sector: '60660af3786b3c00470115c9',
+  };
+
+  const user5 = {
+    name: 'Usuario Cinco',
+    email: 'cinco@gmail.com',
+    role: 'admin',
+    sector: '60660af3786b3c00470115c9',
+  };
+
   const token = jwt.sign({ name: "Teste", description: "Teste" }, process.env.SECRET, {
     expiresIn: 240,
   });
 
+  beforeAll(async () => {
+    await request(app).post('/signup').set('x-access-token', token).send(user1);
+    await request(app).post('/signup').set('x-access-token', token).send(user2);
+    await request(app).post('/signup').set('x-access-token', token).send(user3);
+    await request(app).post('/signup').set('x-access-token', token).send(user4);
+    await request(app).post('/signup').set('x-access-token', token).send(user5);
+  })
+
   it('App is defined', (done) => {
     expect(app).toBeDefined();
+    done();
+  });
+
+  it('Get newest four sectors', async (done) => {
+    const res = await request(app).get('/users/newest-four').set('x-access-token', token);
+    expect(res.statusCode).toBe(200);
+    expect(res.body.length).toBe(4);
     done();
   });
 
