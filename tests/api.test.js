@@ -15,6 +15,7 @@ describe('Sample Test', () => {
     email: 'jacquin@gmail.com',
     role: 'admin',
     sector: '60660af3786b3c00470115c9',
+    image: '1234567ahshdess',
   };
 
   const token = jwt.sign({ name: "Teste", description: "Teste" }, process.env.SECRET, {
@@ -34,6 +35,7 @@ describe('Sample Test', () => {
     expect(res.body.email).toBe(user.email);
     expect(res.body.role).toBe(user.role);
     expect(res.body.sector).toBe(user.sector);
+    expect(res.body.image).toBe(user.image);
     id = res.body._id;
     done();
   });
@@ -91,6 +93,7 @@ describe('Sample Test', () => {
       email: 'jacquin2@gmail.com',
       role: 'admin',
       sector: '60660af3786b3c00470115c9',
+      image: '1234567ahshdessaaaa',
       pass: '123456',
     };
 
@@ -103,6 +106,7 @@ describe('Sample Test', () => {
     expect(res.body.email).toBe(userUpdate.email);
     expect(res.body.role).toBe(userUpdate.role);
     expect(res.body.sector).toBe(userUpdate.sector);
+    expect(res.body.image).toBe(userUpdate.image);
   });
 
   it('Update user error', async () => {
