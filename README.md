@@ -19,6 +19,17 @@ A documentação do projeto pode ser acessada pelo nosso site em https://fga-eps
 
 ## Como rodar?
 
+É necessário adicionar os seguintes parâmetros para o arquivo .env:
+
+```
+host=smtp.gmail.com
+port=
+email=sigedemandas@gmail.com
+pass=siged2021
+```
+
+ O email que será utilizado para enviar senhas temporárias deve ser colocado no campo de "email" juntamente com a senha deste no campo "pass". No campo "host" se adiciona o protocolo de comunicação do email, quando necessário.
+
 Para rodar a API é preciso usar os seguintes comandos usando o docker:
 
 Crie uma network para os containers da API, caso não exista:
@@ -33,6 +44,14 @@ Suba o container com o comando:
 docker-compose up
 ```
 A API estará rodando na [porta 3001](http://localhost:3001).
+
+## Testes
+
+Para rodar os testes utilize o comando:
+
+```bash 
+docker exec -it api_users bash
+```
 
 ## Rotas
 
@@ -82,4 +101,4 @@ Para atualizar os dados do usuário, envie os dados atualizados seguindo o padr�
 
 **DELETE: `/users/delete/:id`**
 
-Para desativar um cliente pelo `id`.
+Para desativar um usuário pelo `id`.
