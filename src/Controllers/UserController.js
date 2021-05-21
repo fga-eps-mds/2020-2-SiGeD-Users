@@ -27,7 +27,7 @@ const signUpGet = async (req, res) => {
 
 const signUpPost = async (req, res) => {
   const {
-    name, email, role, sector,
+    name, email, role, sector, image,
   } = req.body;
   const { transporter } = mailer;
 
@@ -45,6 +45,7 @@ const signUpPost = async (req, res) => {
       email,
       role,
       sector,
+      image,
       pass: await hash.hashPass(temporaryPassword),
       temporaryPassword: true,
       createdAt: moment.utc(moment.tz('America/Sao_Paulo').format('YYYY-MM-DDTHH:mm:ss')).toDate(),
@@ -66,7 +67,7 @@ const signUpPost = async (req, res) => {
 const signUpPut = async (req, res) => {
   const { id } = req.params;
   const {
-    name, email, role, sector,
+    name, email, role, sector, image,
   } = req.body;
 
   const errorMessage = validation.validate(name, email, role);
@@ -81,6 +82,7 @@ const signUpPut = async (req, res) => {
       email,
       role,
       sector,
+      image,
       updatedAt: moment.utc(moment.tz('America/Sao_Paulo').format('YYYY-MM-DDTHH:mm:ss')).toDate(),
     },
     { new: true });
