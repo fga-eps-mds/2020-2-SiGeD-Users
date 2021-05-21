@@ -1,3 +1,5 @@
+
+
 # API de Usuários
 [![License: GPL-3.0](https://img.shields.io/badge/License-GPL3-blue.svg)](https://opensource.org/licenses/gpl-3.0.html)
 [![codecov](https://codecov.io/gh/fga-eps-mds/2020-2-SiGeD-Users/branch/master/graph/badge.svg?token=O4AN6AODE8)](https://codecov.io/gh/fga-eps-mds/2020-2-SiGeD-Users)
@@ -25,16 +27,30 @@ docker-compose run api_users bash -c  "yarn && yarn jest --coverage --forceExit"
 
 ## Como rodar?
 
-É necessário adicionar os seguintes parâmetros para o arquivo .env:
+O arquivo .env possui configurações iniciais que podem ser alteradas de acordo com a necessidade. São elas:
+ - SECRET: chave para criptografia das senhas
+ - DB_USER: usuário de acesso ao banco de dados
+ - DB_PASS: senha de acesso ao banco de dados
+ - DB_NAME: nome da base de dados
+ - DB_HOST: host da base de dados
+ - host: o protocolo de comunicação do email
+ - port: porta de comunicação do email
+ - email: email que será utilizado para enviar senhas temporárias
+ - pass: senha do email
+
+Veja o exemplo abaixo:
 
 ```
+SECRET=chavedesegredo
+DB_USER=api_user
+DB_PASS=api_password
+DB_NAME=api_database
+DB_HOST=db_users
 host=smtp.gmail.com
 port=
-email=sigedemandas@gmail.com
-pass=siged2021
+email=meuemail@gmail.com
+pass=minhasenha
 ```
-
- O email que será utilizado para enviar senhas temporárias deve ser colocado no campo de "email" juntamente com a senha deste no campo "pass". No campo "host" se adiciona o protocolo de comunicação do email, quando necessário.
 
 Para rodar a API é preciso usar os seguintes comandos usando o docker:
 
@@ -57,14 +73,6 @@ A API estará rodando na [porta 3001](http://localhost:3001).
 
 Para receber os dados dos usuários.
 
-**GET: `/users/:id`**
-
-Para receber os dados de um usuário específico pelo `id`.
-
-**GET: `/users/newest-four`**
-
-Para receber os dados dos últimos quatro usuários adicionados.
-
 
 **POST: `/signup/`**
 
@@ -75,7 +83,8 @@ Para criar um novo usuário, envie os dados nesse formato:
     "name": "Nome do Usuário",
     "email": "usuario@email.com",
     "role": "Cargo",
-    "sector": "Area de Atuação",
+    "sector": "Área de Atuação",
+    "pass": "Senha"
 }
 ```
 
@@ -90,16 +99,6 @@ Para entrar no sitema, envie os dados nesse formato:
 }
 ```
 
-**POST: `/recover-password`**
-
-para recuperar a senha de um usuário:
-
-```json
-{
-    "email": "usuario@email.com",
-}
-```
-
 **PUT: `/users/update/:id`**
 
 Para atualizar os dados do usuário, envie os dados atualizados seguindo o padrão:
@@ -109,21 +108,11 @@ Para atualizar os dados do usuário, envie os dados atualizados seguindo o padr�
     "name": "Nome do Usuário",
     "email": "usuario@email.com",
     "role": "Cargo",
-    "sector": "Area de Atuação",
+    "sector": "Área de Atuação",
     "pass": "Senha"
-}
-```
-
-**PUT: `/change-password/:id`**
-
-Para alterar a senha de um usuário pelo `id`:
-
-```json
-{
-    "pass": "Nova Senha"
 }
 ```
 
 **DELETE: `/users/delete/:id`**
 
-Para desativar um cliente pelo `id`.
+Para desativar um usuário pelo `id`.
