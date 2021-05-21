@@ -1,5 +1,3 @@
-
-
 # API de Usuários
 [![License: GPL-3.0](https://img.shields.io/badge/License-GPL3-blue.svg)](https://opensource.org/licenses/gpl-3.0.html)
 [![codecov](https://codecov.io/gh/fga-eps-mds/2020-2-SiGeD-Users/branch/master/graph/badge.svg?token=O4AN6AODE8)](https://codecov.io/gh/fga-eps-mds/2020-2-SiGeD-Users)
@@ -16,6 +14,14 @@ Caso reste duvidas você também pode entrar em contato conosco criando uma issu
 ## Documentação
 
 A documentação do projeto pode ser acessada pelo nosso site em https://fga-eps-mds.github.io/2020-2-SiGeD/ ou você pode acessar pela [SiGeD Documentação](https://fga-eps-mds.github.io/2020-2-SiGeD/home/)
+
+## Testes
+
+Todas as funções adicionadas nessa API devem ser testadas, o repositŕorio aceita até 10% do total de lihas não testadas. Para rodar os testes nesse repositŕio deve ser executado o comando:
+
+```bash
+docker-compose run api_users bash -c  "yarn && yarn jest --coverage --forceExit"
+```
 
 ## Como rodar?
 
@@ -45,19 +51,19 @@ docker-compose up
 ```
 A API estará rodando na [porta 3001](http://localhost:3001).
 
-## Testes
-
-Para rodar os testes utilize o comando:
-
-```bash 
-docker exec -it api_users bash
-```
-
 ## Rotas
 
 **GET: `/users/`**
 
 Para receber os dados dos usuários.
+
+**GET: `/users/:id`**
+
+Para receber os dados de um usuário específico pelo `id`.
+
+**GET: `/users/newest-four`**
+
+Para receber os dados dos últimos quatro usuários adicionados.
 
 
 **POST: `/signup/`**
@@ -70,7 +76,6 @@ Para criar um novo usuário, envie os dados nesse formato:
     "email": "usuario@email.com",
     "role": "Cargo",
     "sector": "Area de Atuação",
-    "pass": "Senha"
 }
 ```
 
@@ -82,6 +87,16 @@ Para entrar no sitema, envie os dados nesse formato:
 {
     "email": "usuario@email.com",
     "pass": "Senha"
+}
+```
+
+**POST: `/recover-password`**
+
+para recuperar a senha de um usuário:
+
+```json
+{
+    "email": "usuario@email.com",
 }
 ```
 
@@ -99,6 +114,16 @@ Para atualizar os dados do usuário, envie os dados atualizados seguindo o padr�
 }
 ```
 
+**PUT: `/change-password/:id`**
+
+Para alterar a senha de um usuário pelo `id`:
+
+```json
+{
+    "pass": "Nova Senha"
+}
+```
+
 **DELETE: `/users/delete/:id`**
 
-Para desativar um usuário pelo `id`.
+Para desativar um cliente pelo `id`.
