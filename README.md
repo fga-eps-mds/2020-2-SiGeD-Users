@@ -17,7 +17,40 @@ Caso reste duvidas você também pode entrar em contato conosco criando uma issu
 
 A documentação do projeto pode ser acessada pelo nosso site em https://fga-eps-mds.github.io/2020-2-SiGeD/ ou você pode acessar pela [SiGeD Documentação](https://fga-eps-mds.github.io/2020-2-SiGeD/home/)
 
+## Testes
+
+Todas as funções adicionadas nessa API devem ser testadas, o repositŕorio aceita até 10% do total de lihas não testadas. Para rodar os testes nesse repositŕio deve ser executado o comando:
+
+```bash
+docker-compose run api_users bash -c  "yarn && yarn jest --coverage --forceExit"
+```
+
 ## Como rodar?
+
+O arquivo .env possui configurações iniciais que podem ser alteradas de acordo com a necessidade. São elas:
+ - SECRET: chave para criptografia das senhas
+ - DB_USER: usuário de acesso ao banco de dados
+ - DB_PASS: senha de acesso ao banco de dados
+ - DB_NAME: nome da base de dados
+ - DB_HOST: host da base de dados
+ - host: o protocolo de comunicação do email
+ - port: porta de comunicação do email
+ - email: email que será utilizado para enviar senhas temporárias
+ - pass: senha do email
+
+Veja o exemplo abaixo:
+
+```
+SECRET=chavedesegredo
+DB_USER=api_user
+DB_PASS=api_password
+DB_NAME=api_database
+DB_HOST=db_users
+host=smtp.gmail.com
+port=
+email=meuemail@gmail.com
+pass=minhasenha
+```
 
 Para rodar a API é preciso usar os seguintes comandos usando o docker:
 
@@ -50,7 +83,7 @@ Para criar um novo usuário, envie os dados nesse formato:
     "name": "Nome do Usuário",
     "email": "usuario@email.com",
     "role": "Cargo",
-    "sector": "Area de Atuação",
+    "sector": "Área de Atuação",
     "pass": "Senha"
 }
 ```
@@ -75,11 +108,11 @@ Para atualizar os dados do usuário, envie os dados atualizados seguindo o padr�
     "name": "Nome do Usuário",
     "email": "usuario@email.com",
     "role": "Cargo",
-    "sector": "Area de Atuação",
+    "sector": "Área de Atuação",
     "pass": "Senha"
 }
 ```
 
 **DELETE: `/users/delete/:id`**
 
-Para desativar um cliente pelo `id`.
+Para desativar um usuário pelo `id`.
